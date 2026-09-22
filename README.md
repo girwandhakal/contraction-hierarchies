@@ -209,6 +209,61 @@ python -m search_algorithms.benchmark.run_benchmark --trials 20 --max-weight 9
 
 ![Benchmark curves](docs/images/benchmark_uniform.png)
 
+### Follow-up questions
+
+**1. Why can BFS return a more expensive path than UCS on a weighted grid?**
+
+BFS orders its frontier by depth, not cost, and returns the first path
+that reaches the goal. That path has the fewest edges, but fewest edges
+only means cheapest when every edge costs the same. The weighted grid
+(`maps/map2.txt`) shows the gap at its widest: 8 steps costing 57, versus
+12 steps costing 12. The same thing happens on the street network for the
+same reason: BFS uses 19 intersections but drives 1.2 km further than
+necessary.
+
+**2. If UCS and A\* return the same cost, why does A\* expand fewer states?**
+
+Both are best-first searches that differ only in how they order the
+frontier. UCS uses `g(n)`, the cost already spent getting there, so it
+expands outward in every direction equally, including away from the goal.
+A\* uses `f(n) = g(n) + h(n)`, adding an estimate of the remaining cost,
+which lowers the priority of states that are cheap to reach but point the
+wrong way. With an admissible `h`, A\* never expands a state whose `f`
+exceeds the optimal cost, so it never expands more states than UCS, and
+usually expands far fewer. In the route figures, UCS's expanded region is
+roughly circular; A\*'s is stretched toward the goal.
+
+**3. What happens to A\* when h(n) = 0 everywhere?**
+
+`f(n) = g(n) + 0 = g(n)`, which is exactly UCS's priority function. A\*
+becomes UCS, including identical tie-breaking and an identical expansion
+order. This is checked in
+[`tests/test_problem_abc.py::test_zero_heuristic_makes_astar_equal_ucs`](tests/test_problem_abc.py),
+which compares the full `expansion_order` lists, not just the counts. The
+zero heuristic is technically admissible, since it never overestimates —
+it just never estimates anything, which is why it does not save any work.
+
+**4. If Manhattan distance h(n) is replaced by 2·h(n), is A\* still optimal?**
+
+Not always. Doubling the estimate can push it above the true remaining
+cost, which makes the heuristic inadmissible. When that happens, A\* can
+settle on a suboptimal path — it may return the goal while a cheaper route
+is still sitting in the frontier, because that cheaper route looked worse
+due to the inflated estimate.
+
+There is still a bound, though. Weighted A\* with `f = g + w·h` returns a
+path that costs at most `w` times the optimal cost. So `2h` gives a result
+that is at most 2x the optimal cost, and in practice it is usually much
+closer than that while expanding far fewer nodes. This is implemented as
+`weighted_astar`, and the bound is checked in
+[`tests/test_algorithms.py::test_weighted_astar_is_bounded_suboptimal`](tests/test_algorithms.py).
+
+One detail worth noting: on the weighted grids used in this project,
+Manhattan distance underestimates the true cost by so much that doubling
+it (`2h`) usually still stays admissible in practice. Whether doubling the
+heuristic actually breaks optimality depends on how much slack the
+original heuristic had.
+
 ---
 
 ## Replanning

@@ -444,7 +444,7 @@ def benchmark_osm(
 
     # No heuristic: the dense CH ids carry no coordinates, and building a
     # lat/lon heuristic over them would time coordinate lookups rather than
-    # the search. A* on the real graph is covered by docs/analysis.md.
+    # the search. A* on the real graph is covered in the README.
     stats, mismatches = _time_queries(baseline, index.prepared, pairs, None)
 
     result = SizeResult(

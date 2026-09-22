@@ -15,8 +15,8 @@ Node-expansion accounting follows a fixed convention:
   removed from the frontier;
 - stale priority-queue entries are skipped without being counted.
 
-That convention is what makes the node-expansion counts in ``docs/analysis.md``
-directly comparable across algorithms and across problems.
+That convention is what makes the node-expansion counts in the README's
+Results section directly comparable across algorithms and across problems.
 """
 
 from __future__ import annotations
@@ -60,7 +60,8 @@ def bfs(problem: Problem) -> SearchResult:
     Explores by increasing number of moves, ignoring edge costs entirely when
     choosing what to expand next. On a weighted problem it therefore returns
     the path with the fewest *steps*, which is often not the cheapest path -
-    see Experiment 2 in ``docs/analysis.md`` for a concrete example.
+    see the README's Results section (``maps/map2.txt``) for a concrete
+    example.
     """
     started = time.perf_counter()
 
@@ -204,7 +205,8 @@ def weighted_astar(problem: Problem, weight: float = 1.5) -> SearchResult:
     With ``weight > 1`` the heuristic may overestimate, so the result is no
     longer guaranteed optimal - but the search is typically much faster. The
     returned cost is bounded by ``weight`` times the optimal cost: see the
-    bounded-suboptimality discussion in ``docs/analysis.md``.
+    README's "Follow-up questions" section for the bounded-suboptimality
+    discussion.
     """
     if weight < 1.0:
         raise ValueError("weight must be >= 1.0")
@@ -231,6 +233,6 @@ ALGORITHMS: dict[str, Callable[[Problem], SearchResult]] = {
     "weighted_astar": weighted_astar,
 }
 
-#: The three textbook algorithms, compared side by side throughout
-#: ``docs/analysis.md``.
+#: The three textbook algorithms, compared side by side throughout the
+#: README's Results section.
 CLASSIC_ALGORITHMS: tuple[str, ...] = ("bfs", "ucs", "astar")

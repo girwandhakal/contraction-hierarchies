@@ -1,9 +1,9 @@
 """
 Static renderings of a route on a real street network.
 
-Produces the figures that go in the README and ``docs/analysis.md``: a
-search's expanded nodes dotted over the map with the chosen route drawn on
-top, so the *shape* of each algorithm's exploration is visible side by side.
+Produces the figures that go in the README: a search's expanded nodes
+dotted over the map with the chosen route drawn on top, so the *shape* of
+each algorithm's exploration is visible side by side.
 
 These are the colour figures from the original grid/OSM analysis. The
 Contraction Hierarchies plots in

@@ -2,8 +2,9 @@
 Correctness tests for the search algorithms on grid problems.
 
 The headline test is :func:`test_matches_reference_results`, which pins the
-exact figures published in ``docs/analysis.md``. If a refactor ever changes
-tie-breaking or the node-counting convention, that test fails loudly.
+exact figures published in the README's Results section. If a refactor ever
+changes tie-breaking or the node-counting convention, that test fails
+loudly.
 """
 
 from __future__ import annotations
@@ -32,8 +33,9 @@ ALL_ALGORITHMS = (bfs, ucs, astar, greedy_best_first, weighted_astar)
 # Regression against the published reference results
 # --------------------------------------------------------------------------
 
-#: (map, algorithm) -> (cost, steps, nodes_expanded), transcribed from
-#: docs/analysis.md. These are the numbers the implementation must reproduce.
+#: (map, algorithm) -> (cost, steps, nodes_expanded), transcribed from the
+#: README's Results section. These are the numbers the implementation must
+#: reproduce.
 REFERENCE_RESULTS = {
     ("map1.txt", "bfs"): (11, 11, 25),
     ("map1.txt", "ucs"): (11, 11, 25),

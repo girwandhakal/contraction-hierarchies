@@ -1,7 +1,7 @@
 """
 Run the search algorithms on a weighted grid map.
 
-Prints the same figures tabulated in ``docs/analysis.md``, so the
+Prints the same figures tabulated in the README's Results section, so the
 implementation can be checked against the published reference results.
 
 Examples

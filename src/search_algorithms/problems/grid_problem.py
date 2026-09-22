@@ -112,7 +112,7 @@ class GridProblem(Problem):
         Return passable neighbours in the fixed order up, right, down, left.
 
         The order matters: it determines tie-breaking, and therefore the exact
-        node-expansion counts reported in ``docs/analysis.md``.
+        node-expansion counts reported in the README's Results section.
         """
         r, c = state
         result: list[State] = []
