@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install the package and its test dependencies
+        # The OSM extra is deliberately excluded: tests that need a downloaded
+        # street graph skip themselves, so CI stays fast and offline.
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,viz]"
+
+      - name: Run the test suite
+        run: pytest -v
+
+      - name: Check the published reference figures specifically
+        run: pytest tests/test_algorithms.py -k reference_results -v
